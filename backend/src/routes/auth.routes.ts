@@ -15,6 +15,7 @@ import {
 } from '../controllers/twoFactor.controller.js';
 import { requireAuth } from '../middleware/auth.middleware.js';
 import { authLimiter } from '../middleware/rateLimiter.middleware.js';
+import { getDb } from '../config/firebase.js';
 
 const router = Router();
 
@@ -35,7 +36,6 @@ router.post('/2fa/send-email', authLimiter, sendLogin2FACodeToEmail);
 // User profile
 router.get('/me', requireAuth, async (req, res) => {
   try {
-    const { getDb } = await import('../config/firebase.js');
     const db = getDb();
     const doc = await db.collection('users').doc(req.user!.username.toLowerCase()).get();
     if (doc.exists) {

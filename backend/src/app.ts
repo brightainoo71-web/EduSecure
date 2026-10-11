@@ -11,12 +11,16 @@ import adminRoutes from './routes/admin.routes.js';
 const app: Application = express();
 
 // Security headers (allowing data: URIs for 2FA QR code rendering)
+const helmetMiddleware = (typeof helmet === 'function' ? helmet : (helmet as any).default) as any;
 app.use(
-  helmet({
+  helmetMiddleware({
     contentSecurityPolicy: {
       directives: {
-        ...helmet.contentSecurityPolicy.getDefaultDirectives(),
+        'default-src': ["'self'"],
+        'script-src': ["'self'", "'unsafe-inline'"],
+        'style-src': ["'self'", "'unsafe-inline'", 'https:'],
         'img-src': ["'self'", 'data:', 'https:'],
+        'connect-src': ["'self'", 'https:', 'http:'],
       },
     },
   })
@@ -91,8 +95,11 @@ app.use('/api/auth', authRoutes);
 // Admin routes (RBAC protected)
 app.use('/api/admin', adminRoutes);
 
-// Serve built React frontend if available (enables unified single-URL hosting)
-const frontendDist = path.resolve(process.cwd(), '../frontend/dist');
+// Serve built React frontend if available (enables unified single-URL hosting on Vercel & Render)
+const localPublic = path.resolve(process.cwd(), 'public');
+const parentDist = path.resolve(process.cwd(), '../frontend/dist');
+const frontendDist = fs.existsSync(path.join(localPublic, 'index.html')) ? localPublic : parentDist;
+
 if (fs.existsSync(frontendDist)) {
   app.use(express.static(frontendDist));
   app.get(/^(?!\/api).*/, (_req: Request, res: Response) => {

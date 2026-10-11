@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { createRequire } from 'module';
+import * as otplibPkg from 'otplib';
 import QRCode from 'qrcode';
 import { getDb } from '../config/firebase.js';
 import { encrypt, decrypt } from '../utils/crypto.js';
@@ -8,8 +8,7 @@ import { UserDocument } from '../types/user.js';
 
 import { sendTotpEmail } from '../services/email.service.js';
 
-const require = createRequire(import.meta.url);
-const otplib = require('otplib');
+const otplib: any = (otplibPkg as any).default || otplibPkg;
 
 // Helper to support both otplib v12 and v13+ safely
 const generateOtpSecret = (): string => {

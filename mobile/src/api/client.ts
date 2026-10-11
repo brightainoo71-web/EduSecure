@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { getAccessToken, getRefreshToken, saveTokens, clearTokens } from '../utils/secureStore';
 
-export const API_BASE_URL = 'https://270a4e84eb8231.lhr.life/api';
+export const API_BASE_URL = 'https://edusecure-portal-gamma.vercel.app/api';
 
 export const api = axios.create({
   baseURL: API_BASE_URL,

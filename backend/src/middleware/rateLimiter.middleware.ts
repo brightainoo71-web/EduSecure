@@ -1,7 +1,9 @@
 import rateLimit from 'express-rate-limit';
 
+const rateLimitFn = (typeof rateLimit === 'function' ? rateLimit : (rateLimit as any).default) as any;
+
 // Global limiter for standard API routes (300 requests per 15 minutes)
-export const globalLimiter = rateLimit({
+export const globalLimiter = rateLimitFn({
   windowMs: 15 * 60 * 1000,
   max: 300,
   standardHeaders: true, // Return standard RateLimit headers in response
@@ -13,7 +15,7 @@ export const globalLimiter = rateLimit({
 });
 
 // Brute-force limiter for sensitive auth routes (50 requests per 15 minutes)
-export const authLimiter = rateLimit({
+export const authLimiter = rateLimitFn({
   windowMs: 15 * 60 * 1000,
   max: 50,
   standardHeaders: true,
