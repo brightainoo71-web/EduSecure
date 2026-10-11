@@ -13,10 +13,10 @@ export const initializeFirebase = (): Firestore => {
   let serviceAccount: any;
 
   if (process.env.FIREBASE_SERVICE_ACCOUNT_BASE64) {
-    const decoded = Buffer.from(process.env.FIREBASE_SERVICE_ACCOUNT_BASE64, 'base64').toString('utf8');
+    const decoded = Buffer.from(process.env.FIREBASE_SERVICE_ACCOUNT_BASE64.trim(), 'base64').toString('utf8');
     serviceAccount = JSON.parse(decoded);
   } else if (process.env.FIREBASE_SERVICE_ACCOUNT_JSON) {
-    serviceAccount = JSON.parse(process.env.FIREBASE_SERVICE_ACCOUNT_JSON);
+    serviceAccount = JSON.parse(process.env.FIREBASE_SERVICE_ACCOUNT_JSON.trim());
   } else {
     const keyPath = process.env.FIREBASE_SERVICE_ACCOUNT_PATH || './serviceAccountKey.json';
     const resolvedPath = path.resolve(process.cwd(), keyPath);

@@ -1,7 +1,7 @@
 import argon2 from 'argon2';
 import crypto from 'crypto';
 
-const PEPPER = process.env.PASSWORD_PEPPER;
+const PEPPER = process.env.PASSWORD_PEPPER?.trim();
 
 if (!PEPPER) {
   throw new Error('[SECURITY FATAL] PASSWORD_PEPPER is missing in environment variables.');

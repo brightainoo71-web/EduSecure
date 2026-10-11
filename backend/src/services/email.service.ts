@@ -5,8 +5,8 @@ let transporter: Transporter | null = null;
 export const getEmailTransporter = () => {
   if (transporter) return transporter;
 
-  const host = process.env.SMTP_HOST || 'smtp.gmail.com';
-  const port = parseInt(process.env.SMTP_PORT || '587', 10);
+  const host = (process.env.SMTP_HOST || 'smtp.gmail.com').trim();
+  const port = parseInt((process.env.SMTP_PORT || '587').trim(), 10);
   const user = process.env.SMTP_USER?.trim();
   const pass = process.env.SMTP_PASS?.replace(/\s+/g, '');
 

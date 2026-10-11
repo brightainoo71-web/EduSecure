@@ -1,7 +1,7 @@
 import crypto from 'crypto';
 
 const ALGORITHM = 'aes-256-gcm';
-const KEY = process.env.TWO_FACTOR_ENCRYPTION_KEY;
+const KEY = process.env.TWO_FACTOR_ENCRYPTION_KEY?.trim();
 
 if (!KEY || Buffer.from(KEY, 'hex').length !== 32) {
   throw new Error('[SECURITY FATAL] TWO_FACTOR_ENCRYPTION_KEY must be a 32-byte hex string (64 characters).');

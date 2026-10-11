@@ -2,8 +2,8 @@ import jwt from 'jsonwebtoken';
 import crypto from 'crypto';
 import { UserRole } from '../types/user.js';
 
-const ACCESS_SECRET = process.env.JWT_ACCESS_SECRET;
-const REFRESH_SECRET = process.env.JWT_REFRESH_SECRET;
+const ACCESS_SECRET = process.env.JWT_ACCESS_SECRET?.trim();
+const REFRESH_SECRET = process.env.JWT_REFRESH_SECRET?.trim();
 
 if (!ACCESS_SECRET || !REFRESH_SECRET) {
   throw new Error('[SECURITY FATAL] JWT secrets are missing in environment variables.');
